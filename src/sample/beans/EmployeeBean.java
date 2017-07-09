@@ -21,10 +21,7 @@ import sample.models.Employee;
 public class EmployeeBean implements Serializable{
 	private static final List<Employee> employeeList = new ArrayList<Employee>();
 	@PostConstruct
-	public List<Employee> getEmployeeList() throws SQLException{
-
-		
-		//get database connection
+	public void init(){
 		try{
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/tbitdb","root","bossisgreat");
 	
@@ -56,8 +53,44 @@ public class EmployeeBean implements Serializable{
 		catch(Exception e){
 			System.out.println(e);
 		}
-
+	}
+	public List<Employee> getEmployeeList() {
 		return employeeList;
+		
+		//get database connection
+//		try{
+//			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/tbitdb","root","bossisgreat");
+//	
+//			if(con==null)
+//				throw new SQLException("Can't get database connection");
+//	
+//			PreparedStatement ps
+//				= con.prepareStatement(
+//				   "select * from Employees");
+//	
+//			//get empomer data from database
+//			ResultSet result =  ps.executeQuery();
+//	
+//			
+//	
+//			while(result.next()){
+//				Employee emp = new Employee();
+//	
+//	//			emp.setname(result.getLong("empomer_id"));
+//				emp.setId(result.getInt("id"));
+//				emp.setName(result.getString("name"));
+//				emp.setDesignation(result.getString("designation"));
+//				emp.setSalary(result.getString("salary"));
+//	
+//				
+//				employeeList.add(emp);
+//			}
+//		}
+//		catch(Exception e){
+//			System.out.println(e);
+//		}
+//
+//		return employeeList;
 	}
 	public String deleteAction(Employee employee) throws SQLException{
 //		return "success";
