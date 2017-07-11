@@ -4,6 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       >
     <h:head>
     	<h:outputStylesheet library="css" name="table-style.css"  />
@@ -11,9 +12,9 @@
 
     <h:body>
 
-    	<h1>JSF 2.0 + JDBC Example</h1>
+    	<h1>JSF 2.0</h1>
 		<h:form>
- 		<h:dataTable value="#{empl.getEmployeeList()}" var="c"
+ 		<h:dataTable value="#{empl.employeeList}" var="c"
     			styleClass="order-table"
     			headerClass="order-table-header"
     			rowClasses="order-table-odd-row,order-table-even-row"

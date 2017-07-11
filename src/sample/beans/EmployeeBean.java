@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
@@ -19,17 +20,32 @@ import sample.models.Employee;
 @ManagedBean(name="empl")
 @RequestScoped
 public class EmployeeBean implements Serializable{
-	private static final List<Employee> employeeList = new ArrayList<Employee>();
-	@PostConstruct
-	public void init(){
+	private static final long serialVersionUID = 1L;
+	
+	public ArrayList<Employee> employeeList =  getList();
+	public ArrayList<Employee> getEmployeeList(){
+		return employeeList;
+	}
+//	public EmployeeBean(){
+//		try{
+//			employeeList = getList();
+//		}
+//		catch(Exception e){
+//			System.out.println(e);
+//		}
+//	}
+	
+	public ArrayList<Employee> getList(){
+		ArrayList<Employee> temp = new ArrayList<Employee>();
+		Connection con = null;
+		PreparedStatement ps = null;
 		try{
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/tbitdb","root","bossisgreat");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/tbitdb","root","bossisgreat");
 	
 			if(con==null)
 				throw new SQLException("Can't get database connection");
 	
-			PreparedStatement ps
-				= con.prepareStatement(
+			ps = con.prepareStatement(
 				   "select * from Employees");
 	
 			//get empomer data from database
@@ -47,25 +63,28 @@ public class EmployeeBean implements Serializable{
 				emp.setSalary(result.getString("salary"));
 	
 				
-				employeeList.add(emp);
+				temp.add(emp);
 			}
 		}
 		catch(Exception e){
 			System.out.println(e);
 		}
+		return temp;
 	}
-	public List<Employee> getEmployeeList() {
-		return employeeList;
-		
-		//get database connection
+//	@PostConstruct
+//	public void init(){
+//		employeeList = new ArrayList<Employee>();
+//		Connection con = null;
+//		PreparedStatement ps = null;
+////		get database connection
 //		try{
-//			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/tbitdb","root","bossisgreat");
+//			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/tbitdb","root","bossisgreat");
 //	
 //			if(con==null)
 //				throw new SQLException("Can't get database connection");
 //	
-//			PreparedStatement ps
-//				= con.prepareStatement(
+////			PreparedStatement ps
+//			ps	= con.prepareStatement(
 //				   "select * from Employees");
 //	
 //			//get empomer data from database
@@ -85,13 +104,15 @@ public class EmployeeBean implements Serializable{
 //				
 //				employeeList.add(emp);
 //			}
+//			if(ps!=null) ps.close();
+//			if(con!=null) con.close();
 //		}
 //		catch(Exception e){
 //			System.out.println(e);
 //		}
-//
-//		return employeeList;
-	}
+//	
+////		return employeeList;
+//	}
 	public String deleteAction(Employee employee) throws SQLException{
 //		return "success";
 		employeeList.remove(employee);
@@ -107,6 +128,8 @@ public class EmployeeBean implements Serializable{
 
 		//update employee database
 		ps.executeUpdate();
+		if(ps!=null) ps.close();
+		if(con!=null) con.close();
 		return null;
 	}
 }
