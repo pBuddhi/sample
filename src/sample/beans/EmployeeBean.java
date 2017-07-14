@@ -22,6 +22,11 @@ import sample.models.Employee;
 public class EmployeeBean implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
+	private int id;
+	private String name;
+	private String designation;
+	private String salary;
+	
 	public ArrayList<Employee> employeeList =  getList();
 	public ArrayList<Employee> getEmployeeList(){
 		return employeeList;
@@ -131,6 +136,49 @@ public class EmployeeBean implements Serializable{
 		if(ps!=null) ps.close();
 		if(con!=null) con.close();
 		return null;
+	}
+	public String addAction() throws SQLException{
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/tbitdb","root","bossisgreat");
+		if(con==null)
+			throw new SQLException("Can't get database connection");
+
+		PreparedStatement ps
+			= con.prepareStatement(
+			   "insert into Employees values(?,?,?,?)");
+		ps.setString(1, Integer.toString(id));
+		ps.setString(2, name);
+		ps.setString(3, designation);
+		ps.setString(4, salary);
+		
+		//update employee database
+		ps.executeUpdate();
+		employeeList =  getList();
+		return "displayData";
+	}
+	
+	public int getId(){
+		return id;
+	}
+	public String getName(){
+		return name;
+	}
+	public String getDesignation(){
+		return designation;
+	}
+	public String getSalary(){
+		return salary;
+	}
+	public void setId(int id){
+		this.id = id;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+	public void setDesignation(String designation){
+		this.designation = designation;
+	}
+	public void setSalary(String salary){
+		this.salary = salary;
 	}
 }
 
